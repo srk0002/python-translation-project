@@ -2,6 +2,11 @@
 
 import sys
 
+def next_codon(sequence):
+    codon = sequence[0:3]
+    remaining_sequence = sequence[3:]
+    return codon, remaining_sequence
+
 def translate_sequence(rna_sequence, genetic_code):
     """Translates a sequence of RNA into a sequence of amino acids.
 
@@ -28,7 +33,18 @@ def translate_sequence(rna_sequence, genetic_code):
     str
         A string of the translated amino acids.
     """
-    pass
+    rna_sequence = rna_sequence.upper()
+    amino_acid = []
+    while True:
+        if len(rna_sequence) < 3:
+            break
+        codon, remaining_sequence = next_codon(rna_sequence)
+        rna_sequence = remaining_sequence
+        aa = genetic_code[codon]
+        if aa == '*':
+            break
+        amino_acid += aa
+    return "".join(amino_acid)
 
 def get_all_translations(rna_sequence, genetic_code):
     """Get a list of all amino acid sequences encoded by an RNA sequence.
